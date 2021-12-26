@@ -8,6 +8,22 @@
 void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
 
   //TODO
+
+int jj;
+int  ii0, ii1, ii2, ii3;
+   
+  for (jj=0;jj<(*la);jj++){
+	ii0=jj;
+	ii1=(*la)+jj;
+	ii2=2*(*la)+jj;
+	ii3=3*(*la)+jj;
+	AB[ii0]=0.0;
+	AB[ii1]=-1.0;
+	AB[ii2]=2.0;
+	AB[ii3]=-1.0;
+	}
+AB[*la]=0.0;
+AB[4*(*la)-1]=0.0;
 }
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
   int ii, jj, kk;
@@ -93,6 +109,22 @@ void write_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int* la, char* f
 
 void write_GB_operator_colMajor_poisson1D(double* AB, int* lab, int* la, char* filename){
   //TODO
+FILE * file;
+  int ii,jj;
+  file = fopen(filename, "w");
+  //Numbering from 1 to la
+  if (file != NULL){
+    for (ii=0;ii<(*la);ii++){
+      for (jj=0;jj<(*lab);jj++){
+        fprintf(file,"%lf\t",AB[ii*(*lab)+jj]);
+      }
+      fprintf(file,"\n");
+    }
+    fclose(file);
+  }
+  else{
+    perror(filename);
+  }
 }
 
 void write_vec(double* vec, int* la, char* filename){
